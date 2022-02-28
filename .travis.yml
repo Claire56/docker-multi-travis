@@ -5,20 +5,21 @@ services:
   - docker
 
 before_install: #run tests so builld the dev image using Dockerfile.dev
-  - docker build -t claire/react-test -f ./client/Dockerfile.dev ./client
+  - docker build -t clairemk/react-test -f ./client/Dockerfile.dev ./client
 
 script: #run the tests
-  - docker run -e CI=true claire/react-test npm test
+  - docker run -e CI=true clairemk/react-test npm test
 
 after_success:
-  - docker build -t claire/multi-client ./client
-  - docker build -t claire/multi-nginx ./nginx
-  - docker build -t claire/multi-server ./server
-  - docker build -t claire/multi-worker ./worker
+  - docker build -t clairemk/multi-client ./client
+  - docker build -t clairemk/multi-nginx ./nginx
+  - docker build -t clairemk/multi-server ./server
+  - docker build -t clairemk/multi-worker ./worker
   # Log in to the docker CLI
+  # echo "$DOCKER_PASSWORD" get password from environments
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   # Take those images and push them to docker hub
-  - docker push claire/multi-client
-  - docker push claire/multi-nginx
-  - docker push claire/multi-server
-  - docker push claire/multi-worker
+  - docker push clairemk/multi-client
+  - docker push clairemk/multi-nginx
+  - docker push clairemk/multi-server
+  - docker push clairemk/multi-worker
